@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Saisie Travaux – Suivi Irrigation{% endblock %}
+
+{% block content %}
+<div class="saisie-page">
+  <div class="form-card">
+    <h1 class="form-title">✏️ Saisie des Travaux</h1>
+
+    <div id="saisie-msg" class="msg hidden"></div>
+
+    <div class="form-grid">
+
+      <!-- Année -->
+      <div class="field">
+        <label>Année <span class="req">*</span></label>
+        <select id="annee">
+          {% for y in range(2024, 2031) %}
+            <option value="{{ y }}" {{ 'selected' if y == 2025 }}>{{ y }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Réseau -->
+      <div class="field">
+        <label>Réseau <span class="req">*</span></label>
+        <select id="reseau_id">
+          <option value="">– Sélectionner –</option>
+          {% for r in reseaux %}
+            <option value="{{ r.id }}">{{ r.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- AGR (admin sees dropdown, user sees locked value) -->
+      <div class="field">
+        <label>AGR <span class="req">*</span></label>
+        {% if session.role == 'super_admin' %}
+          <select id="agr">
+            <option value="">– Sélectionner –</option>
+            {% for a in agrs %}
+              <option value="{{ a }}">{{ a }}</option>
+            {% endfor %}
+          </select>
+        {% else %}
+          <input type="text" id="agr" value="{{ session.agr }}" readonly class="input-readonly"/>
+        {% endif %}
+      </div>
+
+      <!-- Secteur -->
+      <div class="field">
+        <label>Secteur <span class="req">*</span></label>
+        <select id="secteur">
+          <option value="">– Sélectionner –</option>
+          {% for s in secteurs %}
+            <option value="{{ s }}">{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Diamètre -->
+      <div class="field">
+        <label>Diamètre <span class="req">*</span></label>
+        <select id="diametre">
+          <option value="">– Sélectionner –</option>
+          {% for d in diametres %}
+            <option value="{{ d }}">{{ d }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Quantité -->
+      <div class="field">
+        <label>Quantité (unités) <span class="req">*</span></label>
+        <input type="number" id="quantite_unite" min="0.01" step="0.01" placeholder="ex: 45"/>
+      </div>
+
+      <!-- Marché -->
+      <div class="field">
+        <label>Marché (provenance) <span class="req">*</span></label>
+        <select id="provenance_id">
+          <option value="">– Sélectionner –</option>
+          {% for p in provenances %}
+            <option value="{{ p.id }}">{{ p.reference }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Série -->
+      <div class="field">
+        <label>Série</label>
+        <input type="text" id="serie" placeholder="ex: 64"/>
+      </div>
+
+    </div><!-- /form-grid -->
+
+    <!-- Aperçu conversion -->
+    <div id="conversion-preview" class="conversion-box hidden">
+      <span class="conv-label">Quantité en ml :</span>
+      <span id="conv-value" class="conv-value">–</span>
+      <span class="conv-formula">= quantité × 6,81</span>
+    </div>
+
+    <button id="submit-btn" class="btn btn-primary btn-full btn-large">
+      💾 Enregistrer le travail
+    </button>
+
+    <!-- Historique récent -->
+    <div class="recent-works">
+      <h3>Mes travaux récents</h3>
+      <div id="recent-list"><p class="muted">Chargement…</p></div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Rôle injecté côté serveur pour que app.js puisse vérifier les permissions
+  window.__IS_ADMIN__ = {{ 'true' if session.role == 'super_admin' else 'false' }};
+  initSaisieScreen();
+  // Remplacer les options statiques par la liste dynamique de la DB
+  loadDiameterDropdown("diametre");
+</script>
+{% endblock %}

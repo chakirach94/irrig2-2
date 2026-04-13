@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}Administration – Suivi Irrigation{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+  <h1 class="page-title">⚙️ Administration</h1>
+
+  <div class="admin-grid">
+
+    <!-- ══ Utilisateurs ═══════════════════════════════════════════════ -->
+    <section class="admin-card" id="sect-users">
+      <h2>👤 Utilisateurs</h2>
+
+      <form id="form-user" class="inline-form">
+        <input type="text"     id="u-username" placeholder="Identifiant" required/>
+        <input type="password" id="u-password" placeholder="Mot de passe" required/>
+        <select id="u-role">
+          <option value="user">Utilisateur</option>
+          <option value="super_admin">Admin</option>
+        </select>
+        <select id="u-agr">
+          <option value="">– AGR –</option>
+          {% for a in agrs %}<option value="{{ a }}">{{ a }}</option>{% endfor %}
+        </select>
+        <button type="submit" class="btn btn-sm btn-primary">Ajouter</button>
+        <p id="msg-user" class="msg-inline hidden"></p>
+      </form>
+
+      <table class="admin-table" id="tbl-users">
+        <thead><tr><th>Identifiant</th><th>Rôle</th><th>AGR</th><th></th></tr></thead>
+        <tbody>
+          {% for u in users %}
+          <tr id="user-row-{{ u.id }}">
+            <td>{{ u.username }}</td>
+            <td><span class="badge {{ u.role }}">{{ 'Admin' if u.role=='super_admin' else 'Utilisateur' }}</span></td>
+            <td>{{ u.agr or '–' }}</td>
+            <td><button class="btn btn-sm btn-danger" onclick="deleteUser({{ u.id }})">Supprimer</button></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ══ Réseaux ════════════════════════════════════════════════════ -->
+    <section class="admin-card" id="sect-reseaux">
+      <h2>🗺 Réseaux</h2>
+
+      <form id="form-reseau" class="inline-form" enctype="multipart/form-data">
+        <input type="text" id="r-name" placeholder="Nom du réseau" required/>
+        <input type="file" id="r-file" accept=".geojson,.json" required/>
+        <button type="submit" class="btn btn-sm btn-primary">Ajouter</button>
+        <p id="msg-reseau" class="msg-inline hidden"></p>
+      </form>
+
+      <table class="admin-table" id="tbl-reseaux">
+        <thead><tr><th>Nom</th><th>Fichier GeoJSON</th><th></th></tr></thead>
+        <tbody>
+          {% for r in reseaux %}
+          <tr id="reseau-row-{{ r.id }}">
+            <td>{{ r.name }}</td>
+            <td><code>{{ r.geojson_file }}</code></td>
+            <td><button class="btn btn-sm btn-danger" onclick="deleteReseau({{ r.id }})">Supprimer</button></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ══ Marchés ════════════════════════════════════════════════════ -->
+    <section class="admin-card" id="sect-marches">
+      <h2>📋 Marchés (Provenance)</h2>
+
+      <form id="form-prov" class="inline-form">
+        <input type="text" id="p-ref" placeholder="Référence (ex: M13/23)" required/>
+        <button type="submit" class="btn btn-sm btn-primary">Ajouter</button>
+        <p id="msg-prov" class="msg-inline hidden"></p>
+      </form>
+
+      <table class="admin-table" id="tbl-provs">
+        <thead><tr><th>Référence</th><th></th></tr></thead>
+        <tbody>
+          {% for p in provenances %}
+          <tr id="prov-row-{{ p.id }}">
+            <td id="prov-ref-{{ p.id }}">{{ p.reference }}</td>
+            <td style="white-space:nowrap">
+              <button class="btn btn-sm btn-edit" onclick="editProvenance({{ p.id }})">✏️ Modifier</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteProv({{ p.id }})">Supprimer</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ══ Tarifs ═════════════════════════════════════════════════════ -->
+    <section class="admin-card full-width" id="sect-prices">
+      <h2>💰 Tarifs (Fourniture & Pose)</h2>
+
+      <form id="form-price" class="inline-form">
+        <select id="pr-prov">
+          <option value="">– Marché –</option>
+          {% for p in provenances %}
+          <option value="{{ p.id }}">{{ p.reference }}</option>
+          {% endfor %}
+        </select>
+        <select id="pr-diam">
+          <option value="">– Diamètre –</option>
+          {% for d in diametres %}<option value="{{ d }}">{{ d }}</option>{% endfor %}
+        </select>
+        <input type="number" id="pr-four" placeholder="Fourniture (MAD/ml)" step="0.01" min="0"/>
+        <input type="number" id="pr-pose" placeholder="Pose (MAD/ml)"       step="0.01" min="0"/>
+        <button type="submit" class="btn btn-sm btn-primary">Enregistrer</button>
+        <p id="msg-price" class="msg-inline hidden"></p>
+      </form>
+
+      <div class="table-wrap">
+        <table class="admin-table" id="tbl-prices">
+          <thead>
+            <tr><th>Marché</th><th>Diamètre</th><th>Fourniture (MAD/ml)</th><th>Pose (MAD/ml)</th><th></th></tr>
+          </thead>
+          <tbody>
+            {% for pr in prices %}
+            <tr id="price-row-{{ pr.id }}">
+              <td>{{ pr.reference }}</td>
+              <td>{{ pr.diametre }}</td>
+              <td class="num">{{ "%.2f"|format(pr.prix_fourniture) }}</td>
+              <td class="num">{{ "%.2f"|format(pr.prix_pose) }}</td>
+              <td style="white-space:nowrap">
+                <button class="btn btn-sm btn-edit" onclick="editPrice({{ pr.id }})">✏️ Modifier</button>
+                <button class="btn btn-sm btn-danger" onclick="deletePrice({{ pr.id }})">Supprimer</button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ Diamètres ════════════════════════════════════════════════════ -->
+    <section class="admin-card full-width" id="sect-diameters">
+      <h2>📐 Diamètres ORMVAG</h2>
+
+      <form id="form-diam" class="inline-form">
+        <input type="text" id="diam-val-new" placeholder="ex: Ø 1200 mm" required/>
+        <button type="submit" class="btn btn-sm btn-primary">Ajouter</button>
+        <p id="msg-diam" class="msg-inline hidden"></p>
+      </form>
+
+      <table class="admin-table" id="tbl-diams">
+        <thead><tr><th>Diamètre</th><th>Actions</th></tr></thead>
+        <tbody><tr><td colspan="2" class="muted">Chargement…</td></tr></tbody>
+      </table>
+    </section>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>initAdminScreen(); initDiameterAdmin();</script>
+{% endblock %}

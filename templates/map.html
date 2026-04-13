@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Carte – Suivi Irrigation{% endblock %}
+
+{% block content %}
+<div class="map-layout">
+
+  <!-- ══ Panneau latéral ════════════════════════════════════════════════ -->
+  <aside class="map-sidebar">
+    <h2 class="sidebar-title">Réseaux</h2>
+
+    <!-- Liste des réseaux -->
+    <div id="reseaux-list" class="reseau-list">
+      <p class="muted">Chargement…</p>
+    </div>
+
+    <!-- Légende -->
+    <div class="legend">
+      <h3>Légende</h3>
+      <div class="legend-row"><span class="ldot blue"></span>Aucun travail</div>
+      <div class="legend-row"><span class="ldot green"></span>Travaux enregistrés</div>
+      <div class="legend-row"><span class="ldot orange"></span>Réseau sélectionné</div>
+    </div>
+  </aside>
+
+  <!-- ══ Carte Leaflet ══════════════════════════════════════════════════ -->
+  <div id="map"></div>
+
+  <!-- ══ Panneau popup réseau ══════════════════════════════════════════ -->
+  <div id="reseau-panel" class="reseau-panel hidden">
+    <div class="panel-header">
+      <h3 id="panel-name">–</h3>
+      <button class="btn-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="panel-stat">
+        <span class="stat-label">Total</span>
+        <span id="panel-total" class="stat-val">0</span>
+        <span class="stat-unit">ml</span>
+      </div>
+
+      <h4>Répartition par marché</h4>
+      <div id="panel-breakdown" class="breakdown-list"></div>
+
+      <h4 style="margin-top:1rem">Détail des travaux</h4>
+      <div id="panel-works" class="works-table-wrap"></div>
+
+      <a href="{{ url_for('saisie') }}" class="btn btn-primary btn-full" style="margin-top:1rem">
+        ➕ Ajouter un travail
+      </a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.__IS_ADMIN__ = {{ 'true' if session.role == 'super_admin' else 'false' }};
+  initMapScreen();
+</script>
+{% endblock %}

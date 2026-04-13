@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Connexion – Suivi Irrigation{% endblock %}
+{% block body_class %}login-body{% endblock %}
+
+{% block content %}
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-logo">🌊</div>
+    <h1 class="login-title">Suivi Réseaux d'Irrigation</h1>
+    <p class="login-subtitle">Connectez-vous pour accéder à l'application</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}
+        <div class="flash flash-{{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('login') }}" class="login-form">
+      <div class="field">
+        <label>Identifiant</label>
+        <input type="text" name="username" placeholder="ex: TAZI" required autofocus/>
+      </div>
+      <div class="field">
+        <label>Mot de passe</label>
+        <input type="password" name="password" placeholder="••••••" required/>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Se connecter</button>
+    </form>
+
+    <div class="login-hint">
+      <small>Comptes : TAZI/TAZI · SEA/SEA · BEHT/BEHT · KSIRI/KSIRI · admin/admin</small>
+    </div>
+  </div>
+</div>
+{% endblock %}

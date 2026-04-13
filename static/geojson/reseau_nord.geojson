@@ -1,0 +1,42 @@
+{
+  "type": "FeatureCollection",
+  "name": "Réseau Nord",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "N-SEG-001",
+      "properties": { "id": "N-SEG-001", "name": "Axe Nord Principal", "diametre": "250mm" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[-6.900, 34.040], [-6.882, 34.043], [-6.865, 34.046]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "N-SEG-002",
+      "properties": { "id": "N-SEG-002", "name": "Branche Est", "diametre": "160mm" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[-6.865, 34.046], [-6.858, 34.038], [-6.852, 34.030]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "N-SEG-003",
+      "properties": { "id": "N-SEG-003", "name": "Branche Ouest", "diametre": "160mm" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[-6.900, 34.040], [-6.908, 34.034], [-6.912, 34.025]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "N-SEG-004",
+      "properties": { "id": "N-SEG-004", "name": "Ramification Nord-Est", "diametre": "125mm" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[-6.882, 34.043], [-6.875, 34.052], [-6.868, 34.060]]
+      }
+    }
+  ]
+}

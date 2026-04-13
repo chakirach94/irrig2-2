@@ -1,0 +1,51 @@
+{
+  "type": "FeatureCollection",
+  "name": "Réseau C1",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "C1-SEG-001",
+      "properties": { "id": "C1-SEG-001", "name": "Conduite principale A", "diametre": "200mm" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[-6.860, 34.010], [-6.848, 34.013], [-6.835, 34.016]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "C1-SEG-002",
+      "properties": { "id": "C1-SEG-002", "name": "Conduite secondaire B1", "diametre": "160mm" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[-6.848, 34.013], [-6.848, 34.005], [-6.846, 33.997]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "C1-SEG-003",
+      "properties": { "id": "C1-SEG-003", "name": "Conduite secondaire B2", "diametre": "160mm" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[-6.835, 34.016], [-6.822, 34.016], [-6.815, 34.010]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "C1-SEG-004",
+      "properties": { "id": "C1-SEG-004", "name": "Conduite tertiaire T1", "diametre": "110mm" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[-6.846, 33.997], [-6.838, 33.992], [-6.830, 33.990]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "C1-SEG-005",
+      "properties": { "id": "C1-SEG-005", "name": "Conduite tertiaire T2", "diametre": "110mm" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[-6.815, 34.010], [-6.808, 34.004], [-6.805, 33.996]]
+      }
+    }
+  ]
+}

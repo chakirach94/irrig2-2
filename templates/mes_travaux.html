@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Mes Travaux – Suivi Irrigation{% endblock %}
+
+{% block content %}
+<div class="stats-page">
+  <div class="page-header-row">
+    <h1 class="page-title">📋 Mes Travaux</h1>
+    <a href="{{ url_for('saisie') }}" class="btn btn-primary btn-sm">
+      ✏️ Nouvelle saisie
+    </a>
+  </div>
+
+  <!-- Compteurs de statut -->
+  <div class="status-summary" id="status-summary">
+    <div class="status-kpi pending-kpi">
+      <span id="cnt-pending">–</span>
+      <span class="sk-label">⏳ En attente</span>
+    </div>
+    <div class="status-kpi approved-kpi">
+      <span id="cnt-approved">–</span>
+      <span class="sk-label">✅ Approuvés</span>
+    </div>
+    <div class="status-kpi rejected-kpi">
+      <span id="cnt-rejected">–</span>
+      <span class="sk-label">❌ Rejetés</span>
+    </div>
+  </div>
+
+  <!-- Tableau principal -->
+  <div class="stat-card" style="margin-top:1.25rem">
+    <div class="table-wrap">
+      <table class="stat-table" id="tbl-mes-travaux">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Réseau</th>
+            <th>Marché</th>
+            <th>AGR</th>
+            <th>Secteur</th>
+            <th>Diamètre</th>
+            <th class="num">ml</th>
+            <th style="text-align:center">Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="8" class="muted" style="text-align:center;padding:2rem">
+            Chargement…
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>initMesTravaux();</script>
+{% endblock %}

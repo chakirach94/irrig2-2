@@ -1,0 +1,205 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ext.css – Styles pour les fonctionnalités avancées
+   Inclure dans base.html : <link rel="stylesheet" href="{{ url_for('static', filename='css/ext.css') }}"/>
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Badges de statut ────────────────────────────────────────────────────── */
+.st-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .2rem;
+  padding: .22rem .6rem;
+  border-radius: 20px;
+  font-size: .76rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.st-pending  { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+.st-approved { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+.st-rejected { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+
+/* Lignes colorées dans le tableau mes-travaux */
+.status-row-pending  td { border-left: 3px solid #f59e0b; }
+.status-row-approved td { border-left: 3px solid #22c55e; }
+.status-row-rejected td { border-left: 3px solid #ef4444; opacity: .7; }
+
+/* ── Badge notification dans la navbar ───────────────────────────────────── */
+.nav-pending-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+#notif-badge {
+  position: absolute;
+  top: -7px;
+  right: -10px;
+  background: #ef4444;
+  color: #fff;
+  border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
+  font-size: .68rem;
+  font-weight: 800;
+  display: none;           /* affiché par JS si > 0 */
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--blue);
+  pointer-events: none;
+}
+
+/* ── Page "En attente" ───────────────────────────────────────────────────── */
+.page-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+
+.pending-counter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .35rem;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+  border-radius: var(--r, 8px);
+  padding: .45rem 1rem;
+  font-size: .9rem;
+  font-weight: 600;
+}
+.pending-counter span:first-child {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.btn-approve {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+.btn-approve:hover { background: #bbf7d0; }
+
+.btn-reject {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+}
+.btn-reject:hover { background: #fecaca; }
+
+/* ── Page "Mes travaux" ──────────────────────────────────────────────────── */
+.status-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 600px) { .status-summary { grid-template-columns: 1fr; } }
+
+.status-kpi {
+  border-radius: var(--r, 8px);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .2rem;
+  box-shadow: var(--shadow, 0 1px 4px rgba(0,0,0,.1));
+}
+.status-kpi span:first-child {
+  font-size: 2rem;
+  font-weight: 800;
+}
+.sk-label { font-size: .82rem; font-weight: 600; }
+
+.pending-kpi  { background: #fefce8; color: #854d0e; border: 1px solid #fde047; }
+.approved-kpi { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
+.rejected-kpi { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+
+/* ── Bascule Table / Graphiques ──────────────────────────────────────────── */
+.toggle-bar {
+  display: inline-flex;
+  gap: 0;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: var(--r, 8px);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.toggle-bar button {
+  padding: .45rem 1rem;
+  border: none;
+  background: var(--surface, #fff);
+  color: var(--muted, #64748b);
+  cursor: pointer;
+  font-size: .88rem;
+  font-weight: 600;
+  transition: background .15s, color .15s;
+}
+.toggle-bar button:not(:last-child) {
+  border-right: 1px solid var(--border, #e2e8f0);
+}
+.toggle-bar button.toggle-active {
+  background: var(--blue, #1d4ed8);
+  color: #fff;
+}
+.toggle-bar button:hover:not(.toggle-active) {
+  background: var(--bg, #f0f4f8);
+}
+
+/* ── Conteneurs graphiques ───────────────────────────────────────────────── */
+#charts-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.chart-card {
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: var(--shadow, 0 1px 4px rgba(0,0,0,.1));
+}
+.charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+@media (max-width: 900px) { .charts-row { grid-template-columns: 1fr; } }
+
+.chart-canvas-wrap {
+  position: relative;
+  max-height: 380px;
+}
+
+/* ── Chip AGR ────────────────────────────────────────────────────────────── */
+.agr-chip {
+  background: var(--bg, #f0f4f8);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 20px;
+  padding: .15rem .55rem;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--blue, #1d4ed8);
+}
+
+/* ── Bouton édition inline ───────────────────────────────────────────────── */
+.btn-edit {
+  background: #eff6ff;
+  color: var(--blue, #1d4ed8);
+  border: 1px solid #bfdbfe;
+}
+.btn-edit:hover { background: #dbeafe; }
+
+/* ── Export Excel ────────────────────────────────────────────────────────── */
+.export-bar {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.btn-excel {
+  background: #16a34a;
+  color: #fff;
+  border: none;
+}
+.btn-excel:hover { opacity: .88; }

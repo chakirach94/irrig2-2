@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Statistiques – Suivi Irrigation{% endblock %}
+
+{% block content %}
+<div class="stats-page">
+  <div class="page-header-row">
+    <h1 class="page-title">📊 Statistiques</h1>
+    <div style="display:flex;gap:.75rem;align-items:center">
+      <div class="toggle-bar">
+        <button id="btn-tbl"  class="toggle-active" onclick="toggleStatsView('table')">📋 Tableaux</button>
+        <button id="btn-chrt" onclick="toggleStatsView('chart')">📊 Graphiques</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ Cartes totaux ══════════════════════════════════════════════════ -->
+  <div class="kpi-row" id="kpi-row">
+    <div class="kpi-card blue">
+      <div class="kpi-icon">📏</div>
+      <div class="kpi-body">
+        <div class="kpi-label">Quantité totale</div>
+        <div class="kpi-value" id="kpi-ml">–</div>
+        <div class="kpi-unit">ml</div>
+      </div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-icon">🔩</div>
+      <div class="kpi-body">
+        <div class="kpi-label">Coût fourniture</div>
+        <div class="kpi-value" id="kpi-four">–</div>
+        <div class="kpi-unit">MAD</div>
+      </div>
+    </div>
+    <div class="kpi-card teal">
+      <div class="kpi-icon">🔧</div>
+      <div class="kpi-body">
+        <div class="kpi-label">Coût pose</div>
+        <div class="kpi-value" id="kpi-pose">–</div>
+        <div class="kpi-unit">MAD</div>
+      </div>
+    </div>
+    <div class="kpi-card orange">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-body">
+        <div class="kpi-label">Coût total</div>
+        <div class="kpi-value" id="kpi-total">–</div>
+        <div class="kpi-unit">MAD</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ Tableaux ═══════════════════════════════════════════════════════ -->
+  <div id="tables-view">
+  <div class="stats-grid">
+
+    <!-- Par réseau -->
+    <div class="stat-card">
+      <h2>📍 Par Réseau</h2>
+      <div class="table-wrap"><table id="tbl-reseau" class="stat-table">
+        <thead><tr><th>Réseau</th><th>ml</th><th>Fourniture</th><th>Pose</th><th>Total</th></tr></thead>
+        <tbody><tr><td colspan="5" class="muted">Chargement…</td></tr></tbody>
+      </table></div>
+    </div>
+
+    <!-- Par AGR -->
+    <div class="stat-card">
+      <h2>🏢 Par AGR</h2>
+      <div class="table-wrap"><table id="tbl-agr" class="stat-table">
+        <thead><tr><th>AGR</th><th>ml</th><th>Fourniture</th><th>Pose</th><th>Total</th></tr></thead>
+        <tbody><tr><td colspan="5" class="muted">Chargement…</td></tr></tbody>
+      </table></div>
+    </div>
+
+    <!-- Par marché -->
+    <div class="stat-card">
+      <h2>📋 Par Marché</h2>
+      <div class="table-wrap"><table id="tbl-marche" class="stat-table">
+        <thead><tr><th>Marché</th><th>ml</th><th>Fourniture</th><th>Pose</th><th>Total</th></tr></thead>
+        <tbody><tr><td colspan="5" class="muted">Chargement…</td></tr></tbody>
+      </table></div>
+    </div>
+
+    <!-- Par secteur -->
+    <div class="stat-card">
+      <h2>🗂 Par Secteur</h2>
+      <div class="table-wrap"><table id="tbl-secteur" class="stat-table">
+        <thead><tr><th>Secteur</th><th>ml</th><th>Fourniture</th><th>Pose</th><th>Total</th></tr></thead>
+        <tbody><tr><td colspan="5" class="muted">Chargement…</td></tr></tbody>
+      </table></div>
+    </div>
+
+  </div>
+  </div><!-- /tables-view -->
+
+  <!-- ══ Graphiques ════════════════════════════════════════════════════ -->
+  <div id="charts-view" class="hidden">
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-canvas-wrap"><canvas id="chart-bar"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-canvas-wrap"><canvas id="chart-pie"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-card" style="margin-top:1.25rem">
+      <div class="chart-canvas-wrap"><canvas id="chart-costs"></canvas></div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>initStatsScreen();</script>
+{% endblock %}

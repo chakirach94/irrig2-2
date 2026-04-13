@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Suivi Irrigation{% endblock %}</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ext.css') }}"/>
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+{% if session.user_id %}
+<!-- ══ Barre de navigation ════════════════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="nav-brand">
+    <span class="brand-icon">🌊</span>
+    <span class="brand-name">Suivi Réseaux</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="{{ url_for('map_screen') }}" class="{{ 'active' if request.endpoint=='map_screen' }}">🗺 Carte</a></li>
+    <li><a href="{{ url_for('saisie') }}"     class="{{ 'active' if request.endpoint=='saisie'     }}">✏️ Saisie</a></li>
+    <li><a href="{{ url_for('stats') }}"      class="{{ 'active' if request.endpoint=='stats'      }}">📊 Statistiques</a></li>
+    {% if session.role == 'super_admin' %}
+    <li>
+      <div class="nav-pending-wrap">
+        <a href="/en-attente" class="{{ 'active' if request.endpoint=='ext.pending_page' }}">⏳ Validation</a>
+        <span id="notif-badge"></span>
+      </div>
+    </li>
+    <li><a href="{{ url_for('admin') }}"      class="{{ 'active' if request.endpoint=='admin'      }}">⚙️ Admin</a></li>
+    {% else %}
+    <li><a href="/mes-travaux" class="{{ 'active' if request.endpoint=='ext.mes_travaux_page' }}">📋 Mes Travaux</a></li>
+    {% endif %}
+  </ul>
+  <div class="nav-user">
+    <span class="user-badge {{ session.role }}">
+      {{ '👑' if session.role=='super_admin' else '👤' }}
+      {{ session.username }}
+      {% if session.agr %}<em>({{ session.agr }})</em>{% endif %}
+    </span>
+    <a href="/export/excel" class="btn-logout" style="background:rgba(22,163,74,.85)" title="Exporter Excel (travaux approuvés)">📥 Export</a>
+    <a href="{{ url_for('logout') }}" class="btn-logout">Déconnexion</a>
+  </div>
+</nav>
+{% endif %}
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-container">
+      {% for cat, msg in messages %}
+        <div class="flash flash-{{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<main class="main-content">
+  {% block content %}{% endblock %}
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ext.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
