@@ -20,8 +20,7 @@ CONV_FACTOR = 6.81   # 1 unité → 6.81 ml
 
 DIAMETRES = ["63mm","90mm","110mm","125mm","140mm","160mm","180mm","200mm","250mm","315mm"]
 AGRS      = ["TAZI","SEA","BEHT","KSIRI"]
-SECTEURS  = ["Secteur 1","Secteur 2","Secteur 3","Secteur 4","Secteur 5",
-             "Secteur 6","Secteur 7","Secteur 8","Secteur 9","Secteur 10"]
+SECTEURS  = ["C1","C2","S5"]
 
 # ─── DB helpers ───────────────────────────────────────────────────────────────
 
