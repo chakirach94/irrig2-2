@@ -43,9 +43,17 @@ function confirmDel(msg) {
 function initMapScreen() {
   // Carte Leaflet centrée sur le Maroc
   const map = L.map("map").setView([34.0, -6.5], 10);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "© OpenStreetMap contributors", maxZoom: 19
-  }).addTo(map);
+  // Satellite base (ESRI — free, no API key)
+  L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    { maxZoom: 19, attribution: 'Tiles © Esri' }
+  ).addTo(map);
+
+  // Place names on top of satellite
+  L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+    { maxZoom: 19, opacity: 0.7 }
+  ).addTo(map);
 
   let layers     = {};      // reseau_id → L.geoJSON layer
   let activeId   = null;
