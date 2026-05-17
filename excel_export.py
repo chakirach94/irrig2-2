@@ -165,8 +165,8 @@ def build_excel(rows):
 
         total_unite = sum(w["quantite_unite"] for w in works)
         total_ml    = sum(w["quantite_ml"]    for w in works)
-        total_four  = sum(w["quantite_ml"] * w["prix_four"]   for w in works)
-        total_pose  = sum(w["quantite_ml"] * w["prix_pose_u"] for w in works)
+        total_four  = sum(w["quantite_unite"] * w["prix_four"]   for w in works)
+        total_pose  = sum(w["quantite_unite"] * w["prix_pose_u"] for w in works)
 
         # Prix unitaire unique seulement si constant dans le groupe
         four_set = {w["prix_four"]   for w in works}
